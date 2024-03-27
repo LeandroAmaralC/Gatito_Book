@@ -1,0 +1,75 @@
+<h4 class="text-center">Registre-se e mostre seu pet ao mundo!</h4>
+
+<form class="form mt-4" [formGroup]="novoUsuarioForm" (submit)="cadastrar()">
+  <br>
+  <div class="form-group">
+    <input
+       type="text"
+       placeholder="e-mail"
+       class="form-control"
+       formControlName="email"
+       >
+       <app-mensagem
+                     *ngIf="novoUsuarioForm.get('email')?.errors?.required && novoUsuarioForm.get('email')?.touched"
+                     [mensagem]="mensagemEmail">
+        </app-mensagem>
+
+       <app-mensagem
+                     *ngIf="novoUsuarioForm.get('email')?.errors?.email && novoUsuarioForm.get('email')?.touched "
+                     [mensagem]="erroEmail">
+       </app-mensagem>
+
+       <br>
+  </div>
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="Nome Completo"
+        class="form-control"
+        formControlName="fullName">
+    </div>
+    <app-mensagem
+                  [mensagem]="nomeIncorreto"
+                  *ngIf="novoUsuarioForm.get('fullName')?.errors && novoUsuarioForm.get('fullName')?.touched "
+    >
+
+    </app-mensagem>
+    <br>
+    <div class="form-group">
+        <input
+        placeholder="Usuário"
+        class="form-control"
+        formControlName="userName"
+        >
+        <app-mensagem
+             *ngIf="novoUsuarioForm.get('userName')?.errors?.minusculo &&
+             novoUsuarioForm.get('userName')?.touched"
+             [mensagem]="mensagemUsuario"
+        ></app-mensagem>
+
+        <app-mensagem
+        *ngIf="novoUsuarioForm.get('userName')?.errors?.usuarioExistente"
+        [mensagem]="mensagemUsuarioJaExiste"
+        ></app-mensagem>
+
+        <br>
+    </div>
+    <div class="form-group">
+      <input type="password"
+      placeholder="Senha"
+      class="form-control"
+      formControlName="password"
+      >
+
+      <app-mensagem
+      *ngIf="novoUsuarioForm.errors?.senhaIgualUsuario"
+      [mensagem]="erroSenha"
+      ></app-mensagem>
+      <br>
+    </div>
+
+    <button class="btn btn-primary btn-block">Cadastro</button>
+
+</form>
+
+<p>Ja é um usuário?<a [routerLink]="['']"> Faça login!</a></p>
