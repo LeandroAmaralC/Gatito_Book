@@ -1,4 +1,9 @@
+import { AnimaisService } from './../animais.service';
 import { Component, OnInit } from '@angular/core';
+import { Animais } from '../animais';
+import { UsuarioService } from 'src/app/autenticacao/usuario/usuario.service';
+import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-lista-animais',
@@ -7,11 +12,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaAnimaisComponent implements OnInit {
 
-  constructor() { }
+  animais$!: Observable<Animais>;
+
+  constructor(private usuarioService: UsuarioService,
+              private animaisService: AnimaisService) { }
 
   mensagem : string = 'erro na mensagem'
 
   ngOnInit(): void {
+
+   this.animais$ = this.usuarioService.retornaUsuario().pipe(
+      switchMap((usuario) => {
+        const userName =  usuario.name ?? '';
+        return this.animaisService.listaDoUsuario(userName);
+      } )
+    )
+
+
+    // this.usuarioService.retornaUsuario().subscribe((usuario) => {
+    //   const userName = usuario.name ?? '';
+    //   this.AnimaisService.listaDoUsuario(userName).subscribe((animais) => {
+    //     this.animais = animais;
+    //   })
+    // })
   }
 
 }
