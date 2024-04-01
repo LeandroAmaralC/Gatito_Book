@@ -4,6 +4,7 @@ import { Animais } from '../animais';
 import { UsuarioService } from 'src/app/autenticacao/usuario/usuario.service';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lista-animais',
@@ -12,29 +13,16 @@ import { Observable } from 'rxjs';
 })
 export class ListaAnimaisComponent implements OnInit {
 
-  animais$!: Observable<Animais>;
+  animais!: Animais;
 
-  constructor(private usuarioService: UsuarioService,
-              private animaisService: AnimaisService) { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   mensagem : string = 'erro na mensagem'
 
   ngOnInit(): void {
-
-   this.animais$ = this.usuarioService.retornaUsuario().pipe(
-      switchMap((usuario) => {
-        const userName =  usuario.name ?? '';
-        return this.animaisService.listaDoUsuario(userName);
-      } )
-    )
-
-
-    // this.usuarioService.retornaUsuario().subscribe((usuario) => {
-    //   const userName = usuario.name ?? '';
-    //   this.AnimaisService.listaDoUsuario(userName).subscribe((animais) => {
-    //     this.animais = animais;
-    //   })
-    // })
+    this.activatedRoute.params.subscribe((param) => {
+      this.animais = this.activatedRoute.snapshot.data['animais'];
+    });
   }
 
 }
