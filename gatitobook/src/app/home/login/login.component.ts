@@ -26,8 +26,8 @@ mensagemSenha : string = 'Senha é obrigatório'
   }
 
   login() {
-    console.log(this.usuario);
-    console.log(this.senha);
+    // console.log(this.usuario);
+    // console.log(this.senha);
     const conjunto = [
       this.usuario, this.senha
     ]
